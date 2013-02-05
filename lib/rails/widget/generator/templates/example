@@ -1,0 +1,1 @@
+= render_widget <%= widget.name.to_sym.inspect %>, [1,2,3], reverse: true

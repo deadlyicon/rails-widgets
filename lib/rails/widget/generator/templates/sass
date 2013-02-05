@@ -1,0 +1,5 @@
+// .<%= widget.name %>
+&
+  background-color: red
+  color: green
+  outline: 2px dotted purple

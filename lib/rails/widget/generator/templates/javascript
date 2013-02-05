@@ -1,0 +1,22 @@
+<%= javascript_object_name %> = Rails.Widget.extend(function(widget){
+
+  widget.click(function(){
+
+  });
+
+  widget.selector.join('> a').click(function(a, event){
+    event.preventDefault();
+    console.log(a, 'was clicked for widget', this);
+  });
+
+  widget.exampleOnClickHandler = function(element, event){
+    example_private_method(this.anotherExamplePublicMethod());
+  };
+
+  // private
+
+  function example_private_method(message) {
+    alert(message);
+  }
+
+});

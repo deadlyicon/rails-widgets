@@ -1,0 +1,9 @@
+describe(<%= javascript_object_name.inspect %>, function(){
+  beforeEach(function(){
+    mocha.fixture.load('<%= widget.name %>');
+  });
+
+  it("write tests please!", function(){
+    throw "write tests please!";
+  });
+});

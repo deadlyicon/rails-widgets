@@ -1,0 +1,7 @@
+class <%= widget.name.camelize %>Widget < Rails::Widget::Presenter
+
+  arguments :members
+
+  options :reverse => false
+
+end
