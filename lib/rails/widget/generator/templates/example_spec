@@ -4,4 +4,8 @@ describe "<%= widget.name %> example" do
 
   it_should_behave_like "a widget example"
 
+  it "should have more tests" do
+    raise "write tests please!"
+  end
+
 end

@@ -2,12 +2,14 @@ require 'spec_helper'
 
 describe <%= widget.name.inspect %> do
 
-  it_should_behave_like "a widget view"
-
   let(:members){ double(:members) }
 
   subject{
     view.render_widget <%= widget.name.to_sym.inspect %>, members, :class => 'bottom-margin-1'
   }
+
+  it "should have more tests" do
+    raise "write tests please!"
+  end
 
 end

@@ -3,7 +3,7 @@ describe(<%= javascript_object_name.inspect %>, function(){
     mocha.fixture.load('<%= widget.name %>');
   });
 
-  it("write tests please!", function(){
+  it("should have more tests", function(){
     throw "write tests please!";
   });
 });

@@ -32,4 +32,8 @@ describe <%= widget.name.camelize %>Widget do
     end
   end
 
+  it "should have more tests" do
+    raise "write tests please!"
+  end
+
 end
