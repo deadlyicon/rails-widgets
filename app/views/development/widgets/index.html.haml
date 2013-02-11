@@ -1,0 +1,5 @@
+%h1 Widgets
+%ul
+  - @widgets.each do |widget|
+    %li
+      = link_to widget.name, development_widget_url(widget.name)

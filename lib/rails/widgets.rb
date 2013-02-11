@@ -18,7 +18,8 @@ module Rails::Widgets
 
 end
 
-require 'rails/widgets/railtie' if defined?(Rails)
+require 'rails/widgets/engine'
+require 'rails/widgets/railtie'
 
 require 'rails/widget'
 require 'rails/widget/presenter'
