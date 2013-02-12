@@ -7,6 +7,10 @@ module Rails::Widgets
     generate_sass!
   end
 
+  def self.precompile!
+    generate_sass!
+  end
+
   def self.generate_sass!
     Rails.root.join('app/assets/stylesheets/_widgets.sass').open('w') do |file|
       Rails::Widget.all.each do |widget|
@@ -20,6 +24,5 @@ end
 
 require 'rails/widgets/engine'
 require 'rails/widgets/railtie'
-
 require 'rails/widget'
 require 'rails/widget/presenter'

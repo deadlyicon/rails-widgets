@@ -5,7 +5,7 @@ class Rails::Widgets::Railtie < Rails::Railtie
   # generators.test_framework   :rspec
 
   rake_tasks do
-    load "rspec/rails/tasks/rspec.rake"
+    load "rails/widgets/tasks/widgets.rake"
   end
 
   generators do
