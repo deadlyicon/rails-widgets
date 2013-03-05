@@ -15,13 +15,12 @@ shared_examples_for "a widget presenter" do
 
       action_view_missing_template = Class.new(ActionView::MissingTemplate){ def initialize(*); end }
 
-      view.should_receive(:render).
-        with(partial: "widgets/#{widget_name}", locals: presenter.locals, &presenter.block).
-        and_raise(action_view_missing_template)
-
-      view.should_receive(:render).
-        with(partial: "widgets/#{widget_name}.html", locals: presenter.locals, &presenter.block).
-        and_return('WIDGET CONTENT')
+      view.should_receive(:render).with(
+        partial: "widgets/#{widget_name}",
+        locals: presenter.locals,
+        formats: view.formats + [:html],
+        &presenter.block
+      ).and_return('WIDGET CONTENT')
 
       presenter.render.should == view.content_tag(node_type, presenter.html_options){ 'WIDGET CONTENT' }
     end

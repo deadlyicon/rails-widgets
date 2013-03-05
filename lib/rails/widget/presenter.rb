@@ -68,9 +68,12 @@ class Rails::Widget::Presenter
     @view.capture do
       @view.content_tag(self.class.node_type, html_options) do
         @view.concat begin
-          @view.render(partial: "widgets/#{name}", locals: locals, &block)
-        rescue ActionView::MissingTemplate
-          @view.render(partial: "widgets/#{name}.html", locals: locals, &block)
+          @view.render(
+            partial: "widgets/#{name}",
+            locals: locals,
+            formats: @view.formats + [:html],
+            &block
+          )
         end
       end
     end
