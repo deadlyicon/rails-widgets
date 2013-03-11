@@ -1,3 +1,5 @@
+require 'html_options'
+
 class Rails::Widget::Presenter
 
   def self.widget_name
@@ -35,12 +37,23 @@ class Rails::Widget::Presenter
     locals[name] = block
   end
 
+  def self.node_type node_type=nil
+    @node_type = node_type unless node_type.nil?
+    @node_type || :div
+  end
+
+  def self.classname *classname
+    @classname = HtmlOptions::Classnames.new + classname if classname.present?
+    @classname || HtmlOptions::Classnames.new
+  end
+
   def initialize view, *arguments, &block
     @view           = view
     @arguments      = arguments
     @block          = block
     @html_options   = HtmlOptions.new arguments.extract_options!
     @html_options.add_classname(self.name)
+    @html_options[:class] += self.class.classname
     process_arguments!
     extract_options!
     populate_locals!
@@ -50,11 +63,6 @@ class Rails::Widget::Presenter
 
   def name
     self.class.widget_name
-  end
-
-  def self.node_type node_type=nil
-    @node_type = node_type unless node_type.nil?
-    @node_type || :div
   end
 
   def locals
