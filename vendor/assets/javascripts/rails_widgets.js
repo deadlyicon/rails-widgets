@@ -4,7 +4,6 @@
 !function(){
   this.Rails = this.Rails || {};
 
-
   Rails.widgets = {};
 
   Rails.widget = function(name, block){
@@ -50,9 +49,6 @@
 
     return this;
   }
-
-
-
 
   // private
 
