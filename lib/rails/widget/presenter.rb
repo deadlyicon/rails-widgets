@@ -43,8 +43,9 @@ class Rails::Widget::Presenter
   end
 
   def self.classname *classname
-    @classname = HtmlOptions::Classnames.new + classname if classname.present?
-    @classname || HtmlOptions::Classnames.new
+    @classname ||= HtmlOptions::Classnames.new
+    @classname += classname if classname.present?
+    @classname
   end
 
   def initialize view, *arguments, &block
@@ -54,9 +55,14 @@ class Rails::Widget::Presenter
     @html_options   = HtmlOptions.new arguments.extract_options!
     @html_options.add_classname(self.name)
     @html_options[:class] += self.class.classname
+    @html_options[:widget] = self.name
     process_arguments!
     extract_options!
     populate_locals!
+    init
+  end
+
+  def init
   end
 
   attr_reader :view, :block, :html_options
