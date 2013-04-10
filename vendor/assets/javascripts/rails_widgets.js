@@ -30,26 +30,6 @@
 
   Rails.Widget.prototype.initialize = $.noop;
 
-  jQuery.fn.widget = function(method){
-    if (arguments.length === 0) return instantiateWidget(this);
-
-    var args = toArray(arguments);
-    var method = args.shift();
-
-    var widgets = this.map(function(){ return $(this).widget(); });
-
-    if (method === 'initialize') return this
-
-    $.unique(widgets).each(function(i, widget){
-      var func = widget[method];
-      if (typeof func !== 'function')
-        throw new Error(method+' is not a function on the '+widget.constructor.classname+' widget');
-      func.apply(widget, args);
-    });
-
-    return this;
-  }
-
   // private
 
   function createWidget(name) {
@@ -61,23 +41,5 @@
     Widget.selector = '.'+name;
     return Widget;
   };
-
-  function instantiateWidget(element){
-    element = $(element).first().closest('[widget]');
-    var widget = element.data('widget');
-    if (widget) return widget;
-    var widget_name = element.attr('widget');
-    if (!widget_name) return undefined;
-    widget = Rails.widgets[widget_name]
-    if (!widget) return undefined;
-    widget = new widget(element);
-    element.data('widget', widget);
-    return widget;
-  }
-
-  function toArray(array) {
-    return Array.apply(this, array)
-  };
-
 
 }();
