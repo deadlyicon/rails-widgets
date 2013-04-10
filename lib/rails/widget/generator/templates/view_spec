@@ -2,11 +2,23 @@ require 'spec_helper'
 
 describe <%= widget.name.inspect %> do
 
-  let(:members){ double(:members) }
-
-  subject{
-    view.render_widget <%= widget.name.to_sym.inspect %>, members, :class => 'bottom-margin-1'
+  let(:members){
+    [
+      double(:member, name: 'Steve'),
+      double(:member, name: 'Lauren'),
+    ]
   }
+
+  def locals
+    {members: members}
+  end
+
+  # example
+  it "should have the member names" do
+    names = html.css('.member').map(&:text)
+    names.should include 'Steve'
+    names.should include 'Lauren'
+  end
 
   it "should have more tests" do
     raise "write tests please!"
