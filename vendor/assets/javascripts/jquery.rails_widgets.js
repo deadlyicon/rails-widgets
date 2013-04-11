@@ -1,4 +1,4 @@
-jQuery.fn.widget = function(method){
+jQuery.fn.widget = function(){
   var element, widget, widget_name, args, method, widgets;
 
   if (arguments.length === 0){
@@ -17,6 +17,13 @@ jQuery.fn.widget = function(method){
 
     element.data('widget', widget);
     return widget;
+  }
+
+
+  if (typeof arguments[0] === 'function' && arguments[0].classname){
+    widget_name = arguments[0].classname;
+    element = this.first().closest('[widget="'+widget_name+'"]');
+    return element.widget();
   }
 
   args = Array.apply(this, arguments);
