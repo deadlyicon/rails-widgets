@@ -21,25 +21,41 @@
   };
 
 
-  Rails.Widget = function(node){
-    this.node = node;
-    this.data = node.data();
-    this.data.widget = this;
-    this.initialize();
+  Rails.Widget = {
+    create: function(node){
+      widget = Object.create(this.prototype);
+      widget.node = node;
+      widget.data = node.data();
+      widget.data.widget = this;
+      widget.initialize();
+      return widget;
+    },
+    initialize: noop,
+    eventHandlerProxy: function(attr){
+      var args = Array.prototype.slice.call(arguments, 1);
+      var Widget = this;
+      return function(){
+        var widget = $(this).widget(Widget);
+        widget[attr].apply(widget, args);
+      }
+    }
   };
 
-  Rails.Widget.prototype.initialize = $.noop;
+  Rails.Widget.prototype = {
+    initialize: noop
+  };
 
   // private
 
   function createWidget(name) {
-    function Widget(){ Rails.Widget.apply(this, arguments); }
-    Widget.initialize = $.noop;
+    // function Widget(){ Rails.Widget.apply(this, arguments); }
+    Widget = Object.create(Rails.Widget);
     Widget.prototype = Object.create(Rails.Widget.prototype);
-    Widget.prototype.constructor = Widget;
     Widget.classname = name;
     Widget.selector = '.'+name;
     return Widget;
   };
+
+  function noop(){};
 
 }();

@@ -13,17 +13,15 @@ jQuery.fn.widget = function(){
     widget = Rails.widgets[widget_name]
     if (!widget) return undefined;
 
-    widget = new widget(element);
+    widget = widget.create(element);
 
     element.data('widget', widget);
     return widget;
   }
 
 
-  if (typeof arguments[0] === 'function' && arguments[0].classname){
-    widget_name = arguments[0].classname;
-    element = this.first().closest('[widget="'+widget_name+'"]');
-    return element.widget();
+  if (arguments[0].classname){
+    return this.first().closest('[widget="'+arguments[0].classname+'"]').widget();
   }
 
   args = Array.apply(this, arguments);
