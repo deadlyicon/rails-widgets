@@ -1,4 +1,4 @@
-describe(<%= javascript_object_name.inspect %>, function(){
+describe("<%= widget.name %> widget", function(){
   beforeEach(function(){
     mocha.fixture.load('<%= widget.name %>');
   });

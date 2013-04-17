@@ -23,27 +23,47 @@
 
   Rails.Widget = {
     create: function(node){
-      widget = Object.create(this.prototype);
+      var widget = Object.create(this.prototype);
       widget.node = node;
       widget.data = node.data();
-      widget.data.widget = this;
+      widget.data.widget = widget;
       widget.initialize();
       return widget;
     },
     initialize: noop,
-    eventHandlerProxy: function(attr){
+    proxy: function(attr){
       var args = Array.prototype.slice.call(arguments, 1);
       var Widget = this;
       return function(){
         var widget = $(this).widget(Widget);
-        widget[attr].apply(widget, args);
+        return widget[attr].apply(widget, args);
       }
     }
   };
 
   Rails.Widget.prototype = {
-    initialize: noop
+    initialize: noop,
+
+    proxy: function(attr){
+      var args = Array.prototype.slice.call(arguments, 1);
+      var widget = this;
+      return function(){
+        return widget[attr].apply(widget, args);
+      }
+    },
+
+    bind: function(types, data, fn){
+      this.node.bind(types, data, fn);
+      return this;
+    },
+
+    trigger: function(type, data){
+      this.node.trigger(type, data);
+      return this;
+    }
   };
+
+  // Object.extend(Rails.Widget.prototype, Multify.Util.EventFunctions);
 
   // private
 
