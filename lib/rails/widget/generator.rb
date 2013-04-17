@@ -23,8 +23,4 @@ class Rails::WidgetGenerator < Rails::Generators::NamedBase
     @app_name ||= Rails.application.class.name.split('::').first
   end
 
-  def javascript_object_name
-    "#{app_name}.#{widget.name.camelize}Widget"
-  end
-
 end

@@ -1,22 +1,28 @@
-<%= javascript_object_name %> = Rails.Widget.extend(function(widget){
+Rails.widget('<%= widget.name %>', function(Widget){
 
-  widget.click(function(){
-
-  });
-
-  widget.selector.join('> a').click(function(a, event){
-    event.preventDefault();
-    console.log(a, 'was clicked for widget', this);
-  });
-
-  widget.exampleOnClickHandler = function(element, event){
-    example_private_method(this.anotherExamplePublicMethod());
+  // This is the initialization function for the widget class its self.
+  // It should be run once when the page loads.
+  Widget.initialize = function(page){
+    // an example delegated event handler that only needs to be bound once per page load
+    $(document).on('click', Widget.selector+' button', onButtonClick);
   };
 
-  // private
+  // This initialization function runs for each instance of this widget
+  this.initialize = function(){
+    // this is an example event handler binding that needs to be done for each widget instance
+    this.node.find('button').on('click', onButtonClick);
+  };
 
-  function example_private_method(message) {
-    alert(message);
+  // public methods
+
+  this.doAThing = function(){
+
+  };
+
+  // private methods
+
+  function onButtonClick(event){
+    $(this).widget().doAThing();
   }
 
 });
