@@ -28,6 +28,7 @@ describe <%= widget.name.camelize %>Widget do
     it do
       should == {
         class: "<%= name %> custom_class",
+        widget: "<%= name %>",
       }
     end
   end

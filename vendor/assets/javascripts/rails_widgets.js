@@ -30,7 +30,9 @@
       widget.initialize();
       return widget;
     },
+
     initialize: noop,
+
     proxy: function(attr){
       var args = Array.prototype.slice.call(arguments, 1);
       var Widget = this;
@@ -38,6 +40,10 @@
         var widget = $(this).widget(Widget);
         return widget[attr].apply(widget, args);
       }
+    },
+
+    $: function(selector, context){
+      return $(this.selector+' '+selector);
     }
   };
 
@@ -60,6 +66,10 @@
     trigger: function(type, data){
       this.node.trigger(type, data);
       return this;
+    },
+
+    $: function(selector, context){
+      return this.node.find(selector);
     }
   };
 
