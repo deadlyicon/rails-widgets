@@ -15,27 +15,51 @@ class Rails::Widget::Presenter
     new(*arguments, &block).render
   end
 
-  def self.arguments *names
-    @arguments = names if names.present?
-    @arguments ||= []
-  end
 
-  def self.options *options
-    if options.present?
-      @options = {}
-      @options.merge! options.extract_options!
-      options.each{|key| @options[key] = nil }
+  def self.arguments *arguments
+    unless defined?(@arguments)
+      @arguments = []
+      @arguments += superclass.arguments if superclass.respond_to? :arguments
     end
-     @options ||= {}
+    if arguments.present?
+      arguments.map(&:to_sym).each do |argument|
+        @arguments << argument
+        define_method(argument){ locals[argument] }
+      end
+    end
+    @arguments
   end
 
-  def self.locals
-    @locals ||= {}
+
+  def self.options
+    unless defined?(@options)
+      @options = {}
+      @options.merge! superclass.options if superclass.respond_to? :options
+    end
+    @options
   end
 
-  def self.local name, &block
-    locals[name] = block
+  def self.option(option, default_value=nil, &block)
+    option = option.to_sym
+    options[option] = block || default_value
+    define_method(option){ locals[option] }
   end
+
+
+  def self.html_options
+    unless defined?(@html_options)
+      @html_options = {}
+      @html_options.merge! superclass.html_options if superclass.respond_to? :html_options
+    end
+    @html_options
+  end
+
+  def self.html_option(html_option, default_value=nil, &block)
+    html_option = html_option.to_sym
+    html_options[html_option] = block || default_value
+    define_method(html_option){ locals[html_option] }
+  end
+
 
   def self.node_type node_type=nil
     @node_type = node_type unless node_type.nil?
@@ -58,7 +82,7 @@ class Rails::Widget::Presenter
     @html_options[:widget] = self.name
     process_arguments!
     extract_options!
-    populate_locals!
+    process_html_options!
     init
   end
 
@@ -112,23 +136,17 @@ class Rails::Widget::Presenter
     extracted_options, @html_options = @html_options, @html_options.slice!(*self.class.options.keys)
     locals.merge! extracted_options
 
-    self.class.options.
-      each{ |key, value|
-        next unless locals[key].nil?
-        next if value.is_a? Proc
-        locals[key] = value
-      }.
-      each{ |key, value|
-        next unless locals[key].nil?
-        next unless value.is_a? Proc
-        locals[key] = instance_eval(&value)
-      }
+    self.class.options.each{ |key, value|
+      next if locals.has_key? key
+      locals[key] = value.respond_to?(:to_proc) ? instance_eval(&value) : value
+    }
   end
 
-  def populate_locals!
-    self.class.locals.each do |key, block|
-      locals[key] = instance_eval(&block)
-    end
+  def process_html_options!
+    self.class.html_options.each{ |key, value|
+      next if html_options.has_key? key
+      html_options[key] = value.respond_to?(:to_proc) ? instance_eval(&value) : value
+    }
   end
 
 end
