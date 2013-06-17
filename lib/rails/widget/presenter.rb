@@ -81,7 +81,7 @@ class Rails::Widget::Presenter
     @html_options[:class] += self.class.classname
     @html_options[:widget] = self.name
     process_arguments!
-    extract_options!
+    process_options!
     process_html_options!
     init
   end
@@ -132,7 +132,7 @@ class Rails::Widget::Presenter
     end
   end
 
-  def extract_options!
+  def process_options!
     extracted_options, @html_options = @html_options, @html_options.slice!(*self.class.options.keys)
     locals.merge! extracted_options
 
